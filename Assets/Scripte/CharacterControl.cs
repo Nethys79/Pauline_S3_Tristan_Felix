@@ -20,12 +20,23 @@ public class CharacterControl : MonoBehaviour
     [Header("------Raycast && Interaction------")]
     [Tooltip("Longueur du raycast. Est définie dans le Void Start")]
     public float range;
+
     [SerializeField]
     private GameObject dot;
     private Image dotImage;
+
     [SerializeField]
     private GameObject InteractionButton;
     private Image InteractionButtonImage;
+
+    [SerializeField]
+    private GameObject FpsMode;
+    [SerializeField]
+    private GameObject ZenitaleMode;
+    [SerializeField]
+    private GameObject RuelleMode;
+
+    public int Helper;
 
 
     [HideInInspector]
@@ -46,12 +57,23 @@ public class CharacterControl : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         range = 10;
 
-        dot = GameObject.Find("/-----UI-----/Canvas/Dot");
+        dot = GameObject.Find("/-----UI-----/Canvas/FPS Mode/Dot");
         dotImage = dot.GetComponent<Image>();
 
-        InteractionButton = GameObject.Find("/-----UI-----/Canvas/ActivateInteraction");
+        InteractionButton = GameObject.Find("/-----UI-----/Canvas/FPS Mode/ActivateInteraction");
         InteractionButtonImage = InteractionButton.GetComponent<Image>();
         InteractionButton.SetActive(false);
+
+        FpsMode = GameObject.Find("/-----UI-----/Canvas/FPS Mode");
+        FpsMode.SetActive(true);
+
+        ZenitaleMode = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode");
+        ZenitaleMode.SetActive(false);
+
+        RuelleMode = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode");
+        RuelleMode.SetActive(false);
+
+        Helper = 0;
     }
 
     void Update()
@@ -87,12 +109,24 @@ public class CharacterControl : MonoBehaviour
         {
             if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Interactible") && hit.distance < 2)
             {
-                Debug.Log(hit.transform.name);
+                
 
                 dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
 
                 InteractionButton.SetActive(true);
                 InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
+                
+                if (hit.transform.tag == "Table")
+                { 
+                    Debug.Log("active table");
+                    Helper = 1;
+                }
+                
+                if (hit.transform.tag == "Window")
+                {
+                    Debug.Log("active window");
+                    Helper = 2;
+                }
             }
             else
             {
@@ -100,12 +134,33 @@ public class CharacterControl : MonoBehaviour
 
                 InteractionButton.SetActive(false);
                 InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 0);
+                Helper = 0;
             }
         }
+
+        
     }
 
-    public void Interacte()
+    public void InteracteIn()
     {
         Debug.Log("Je clique");
+        if(Helper == 1)
+        {
+            FpsMode.SetActive(false);
+            ZenitaleMode.SetActive(true);
+        }
+        if (Helper == 2)
+        {
+            FpsMode.SetActive(false);
+            RuelleMode.SetActive(true);
+        }
+    }
+    
+    public void InteracteOut()
+    {
+        Debug.Log("Je clique");
+        FpsMode.SetActive(true);
+        ZenitaleMode.SetActive(false);
+        RuelleMode.SetActive(false);
     }
 }
