@@ -183,9 +183,6 @@ public class CharacterControl : MonoBehaviour
                     InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 0);
                 }
             }
-
-
-
         }
 
         if (ViewIsChanged)
