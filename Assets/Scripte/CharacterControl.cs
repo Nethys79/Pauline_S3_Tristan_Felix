@@ -36,7 +36,26 @@ public class CharacterControl : MonoBehaviour
     [SerializeField]
     private GameObject RuelleMode;
 
-    public int Helper;
+    [Header("------Position Camera------")]
+    [SerializeField]
+    private int Helper;
+
+    private bool ViewIsChanged;
+
+    [SerializeField]
+    private GameObject VueFPS;
+    [SerializeField]
+    private GameObject VueRuelle;
+    private GameObject RuelleBackButton;
+
+    [SerializeField]
+    private GameObject VueBureau;
+    private GameObject BureauBackButton;
+    private GameObject BureauBookPanel;
+    private GameObject TEST1;
+    private GameObject TEST2;
+    private GameObject BureauBookBackButton;
+
 
 
     [HideInInspector]
@@ -68,16 +87,38 @@ public class CharacterControl : MonoBehaviour
         FpsMode.SetActive(true);
 
         ZenitaleMode = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode");
+        BureauBackButton = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/BackButton");
+        BureauBookPanel = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel");
+        TEST1 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/TEST1");
+        TEST2 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/TEST2");
+        BureauBookBackButton = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/BackButton");
+
         ZenitaleMode.SetActive(false);
+        BureauBookPanel.SetActive(false);
+        TEST1.SetActive(false);
+        TEST2.SetActive(false);
+        BureauBookBackButton.SetActive(false);
 
         RuelleMode = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode");
+        RuelleBackButton = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode/BackButton");
         RuelleMode.SetActive(false);
 
+        VueFPS = GameObject.Find("/-----Player-----/CamPos1");
+
+        VueRuelle = GameObject.Find("/-----ENVIRONNEMENT-----/RuelleBox/CamPos2");
+
+        VueBureau = GameObject.Find("/-----ENVIRONNEMENT-----/CamPos3");
+
         Helper = 0;
+
+        ViewIsChanged = false;
+
+
+        playerCamera.fieldOfView = 70;
     }
 
     void Update()
-    {      
+    {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -86,81 +127,132 @@ public class CharacterControl : MonoBehaviour
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
         moveDirection.y = movementDirectionY;
-        
+
         if (!characterController.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
         }
 
-       
+
         characterController.Move(moveDirection * Time.deltaTime);
 
-        
+
         if (canMove)
         {
             rotationX += -LookAxis.y * lookSpeed;
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, LookAxis.x * lookSpeed, 0);
+
+            if (!ViewIsChanged)
+            {
+                playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+                transform.rotation *= Quaternion.Euler(0, LookAxis.x * lookSpeed, 0);
+            }
         }
 
         RaycastHit hit;
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, range));
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, range)) ;
         {
-            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Interactible") && hit.distance < 2)
+            if (!ViewIsChanged)
             {
-                
-
-                dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
-
-                InteractionButton.SetActive(true);
-                InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
-                
-                if (hit.transform.tag == "Table")
-                { 
-                    Debug.Log("active table");
-                    Helper = 1;
-                }
-                
-                if (hit.transform.tag == "Window")
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Interactible") && hit.distance < 2)
                 {
-                    Debug.Log("active window");
-                    Helper = 2;
+
+
+                    dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
+
+                    InteractionButton.SetActive(true);
+                    InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
+
+                    if (hit.transform.tag == "Table")
+                    {
+                        Debug.Log("active table");
+                        Helper = 1;
+                    }
+
+                    if (hit.transform.tag == "Window")
+                    {
+                        Debug.Log("active window");
+                        Helper = 2;
+                    }
+                }
+                else
+                {
+                    dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 0);
+
+                    InteractionButton.SetActive(false);
+                    InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 0);
                 }
             }
-            else
-            {
-                dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 0);
 
-                InteractionButton.SetActive(false);
-                InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 0);
-                Helper = 0;
-            }
+
+
         }
 
-        
+        if (ViewIsChanged)
+        {
+            Debug.DrawRay(playerCamera.ScreenPointToRay(Input.mousePosition).origin, playerCamera.ScreenPointToRay(Input.mousePosition).direction, Color.red);
+            if (Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out hit))
+            {
+                if (hit.transform.tag == "1")
+                {
+                    BureauBookPanel.SetActive(true);
+                    BureauBookBackButton.SetActive(true);
+                    TEST1.SetActive(true);
+                    Debug.Log(hit.transform.name);
+                }
+
+                if (hit.transform.tag == "2")
+                {
+                    BureauBookPanel.SetActive(true);
+                    BureauBookBackButton.SetActive(true);
+                    TEST2.SetActive(true);
+                    Debug.Log(hit.transform.name);
+                }
+            }
+        }
     }
 
     public void InteracteIn()
     {
         Debug.Log("Je clique");
-        if(Helper == 1)
+        if (Helper == 1)
         {
+            canMove = false;
+            playerCamera.fieldOfView = 70;
+            ViewIsChanged = true;
             FpsMode.SetActive(false);
             ZenitaleMode.SetActive(true);
+            playerCamera.transform.position = VueBureau.transform.position;
+            playerCamera.transform.rotation = VueBureau.transform.rotation;
         }
         if (Helper == 2)
         {
+            ViewIsChanged = true;
             FpsMode.SetActive(false);
             RuelleMode.SetActive(true);
+            playerCamera.transform.position = VueRuelle.transform.position;
+            playerCamera.transform.rotation = VueRuelle.transform.rotation;
         }
     }
-    
+
     public void InteracteOut()
     {
+        canMove = true;
+        playerCamera.fieldOfView = 70;
+        ViewIsChanged = false;
+        Helper = 0;
         Debug.Log("Je clique");
         FpsMode.SetActive(true);
         ZenitaleMode.SetActive(false);
         RuelleMode.SetActive(false);
+        playerCamera.transform.position = VueFPS.transform.position;
+        playerCamera.transform.rotation = VueFPS.transform.rotation;
+    }
+
+    public void BookInteracteOut()
+    {
+        BureauBookPanel.SetActive(false);
+        BureauBookBackButton.SetActive(false);
+        TEST2.SetActive(false);
     }
 }
