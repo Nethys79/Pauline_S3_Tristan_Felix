@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CharacterControl : MonoBehaviour
@@ -35,6 +36,8 @@ public class CharacterControl : MonoBehaviour
     private GameObject ZenitaleMode;
     [SerializeField]
     private GameObject RuelleMode;
+    [SerializeField]
+    private GameObject PauseMode;
 
     [Header("------Position Camera------")]
     [SerializeField]
@@ -44,6 +47,7 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField]
     private GameObject VueFPS;
+
     [SerializeField]
     private GameObject VueRuelle;
     private GameObject RuelleBackButton;
@@ -56,6 +60,8 @@ public class CharacterControl : MonoBehaviour
     private GameObject TEST2;
     private GameObject BureauBookBackButton;
 
+    
+    private GameObject PauseModeBackButton;
 
 
     [HideInInspector]
@@ -102,6 +108,10 @@ public class CharacterControl : MonoBehaviour
         RuelleMode = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode");
         RuelleBackButton = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode/BackButton");
         RuelleMode.SetActive(false);
+
+        PauseMode = GameObject.Find("/-----UI-----/Canvas/Pause");
+        PauseModeBackButton = GameObject.Find("/-----UI-----/Canvas/Pause/BackButton");
+        PauseMode.SetActive(false);
 
         VueFPS = GameObject.Find("/-----Player-----/CamPos1");
 
@@ -251,5 +261,25 @@ public class CharacterControl : MonoBehaviour
         BureauBookPanel.SetActive(false);
         BureauBookBackButton.SetActive(false);
         TEST2.SetActive(false);
+    }
+
+    public void Pause()
+    {
+        PauseMode.SetActive(true);
+    }
+    
+    public void QuitPause()
+    {
+        PauseMode.SetActive(false);
+    }
+    
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(sceneName: "Menu");
+    }
+    
+    public void Option()
+    {
+        Debug.Log("OptionButton");
     }
 }
