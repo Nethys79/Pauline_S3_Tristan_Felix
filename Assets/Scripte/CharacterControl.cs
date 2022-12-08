@@ -58,6 +58,7 @@ public class CharacterControl : MonoBehaviour
     private GameObject BureauBookPanel;
     private GameObject TEST1;
     private GameObject TEST2;
+    private GameObject TEST3;
     private GameObject BureauBookBackButton;
 
     
@@ -97,6 +98,7 @@ public class CharacterControl : MonoBehaviour
         BureauBookPanel = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel");
         TEST1 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/TEST1");
         TEST2 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/TEST2");
+        TEST3 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/ret");
         BureauBookBackButton = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/BackButton");
 
         ZenitaleMode.SetActive(false);
@@ -213,6 +215,14 @@ public class CharacterControl : MonoBehaviour
                     BureauBookPanel.SetActive(true);
                     BureauBookBackButton.SetActive(true);
                     TEST2.SetActive(true);
+                    Debug.Log(hit.transform.name);
+                }
+
+                if (hit.transform.tag == "3")
+                {
+                    BureauBookPanel.SetActive(true);
+                    BureauBookBackButton.SetActive(true);
+                    TEST3.SetActive(true);
                     Debug.Log(hit.transform.name);
                 }
             }
