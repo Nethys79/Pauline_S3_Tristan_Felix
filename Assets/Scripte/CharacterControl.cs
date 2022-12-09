@@ -105,6 +105,7 @@ public class CharacterControl : MonoBehaviour
         BureauBookPanel.SetActive(false);
         TEST1.SetActive(false);
         TEST2.SetActive(false);
+        TEST3.SetActive(false);
         BureauBookBackButton.SetActive(false);
 
         RuelleMode = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode");
@@ -213,7 +214,8 @@ public class CharacterControl : MonoBehaviour
                 if (hit.transform.tag == "2")
                 {
                     BureauBookPanel.SetActive(true);
-                    BureauBookBackButton.SetActive(true);
+                    BureauBookBackButton.SetActive(true); 
+                    TEST1.SetActive(false);
                     TEST2.SetActive(true);
                     Debug.Log(hit.transform.name);
                 }
@@ -222,6 +224,8 @@ public class CharacterControl : MonoBehaviour
                 {
                     BureauBookPanel.SetActive(true);
                     BureauBookBackButton.SetActive(true);
+                    TEST1.SetActive(false);
+                    TEST2.SetActive(false);
                     TEST3.SetActive(true);
                     Debug.Log(hit.transform.name);
                 }
@@ -270,7 +274,9 @@ public class CharacterControl : MonoBehaviour
     {
         BureauBookPanel.SetActive(false);
         BureauBookBackButton.SetActive(false);
+        TEST1.SetActive(false);
         TEST2.SetActive(false);
+        TEST3.SetActive(false);
     }
 
     public void Pause()
