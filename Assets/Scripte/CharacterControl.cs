@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class CharacterControl : MonoBehaviour
 {
+    public ScriptedJourney scriptedJourney;
+
     [Header("------Déplacement------")]
     public float walkingSpeed = 7.5f;
     public float runningSpeed = 11.5f;
@@ -60,6 +62,8 @@ public class CharacterControl : MonoBehaviour
     private GameObject TEST2;
     private GameObject TEST3;
     private GameObject BureauBookBackButton;
+    private GameObject BureauBookFinishButton;
+    private GameObject BureauBookConfirmWindow;
 
     
     private GameObject PauseModeBackButton;
@@ -100,6 +104,8 @@ public class CharacterControl : MonoBehaviour
         TEST2 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/TEST2");
         TEST3 = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/ret");
         BureauBookBackButton = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/BackButton");
+        BureauBookFinishButton = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/Finish");
+        BureauBookConfirmWindow = GameObject.Find("/-----UI-----/Canvas/ZENITAL Mode/Panel/Comfirm");
 
         ZenitaleMode.SetActive(false);
         BureauBookPanel.SetActive(false);
@@ -107,6 +113,8 @@ public class CharacterControl : MonoBehaviour
         TEST2.SetActive(false);
         TEST3.SetActive(false);
         BureauBookBackButton.SetActive(false);
+        BureauBookFinishButton.SetActive(false);
+        BureauBookConfirmWindow.SetActive(false);
 
         RuelleMode = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode");
         RuelleBackButton = GameObject.Find("/-----UI-----/Canvas/RUELLE Mode/BackButton");
@@ -126,12 +134,13 @@ public class CharacterControl : MonoBehaviour
 
         ViewIsChanged = false;
 
-
         playerCamera.fieldOfView = 70;
     }
 
     void Update()
     {
+        Debug.Log(scriptedJourney.StatusTuto);
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -170,22 +179,39 @@ public class CharacterControl : MonoBehaviour
                 if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Interactible") && hit.distance < 2)
                 {
 
-
-                    dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
-
-                    InteractionButton.SetActive(true);
-                    InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
-
-                    if (hit.transform.tag == "Table")
+                    if (hit.transform.tag == "Table" && scriptedJourney.StatusTuto >= 4)
                     {
+                        dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
+                        InteractionButton.SetActive(true);
+                        InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
+
                         Debug.Log("active table");
                         Helper = 1;
                     }
 
-                    if (hit.transform.tag == "Window")
+                    if (hit.transform.tag == "Window" && scriptedJourney.StatusTuto >= 2)
                     {
+                        dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
+                        InteractionButton.SetActive(true);
+                        InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
+
                         Debug.Log("active window");
                         Helper = 2;
+
+                        if(scriptedJourney.StatusTuto == 2)
+                        {
+                            scriptedJourney.StatusTuto = 3;
+                        }
+                    }
+
+                    if (hit.transform.tag == "LetterBox")
+                    {
+                        dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
+                        InteractionButton.SetActive(true);
+                        InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
+
+                        Debug.Log("active LetterBox");
+                        Helper = 3;
                     }
                 }
                 else
@@ -203,7 +229,7 @@ public class CharacterControl : MonoBehaviour
             Debug.DrawRay(playerCamera.ScreenPointToRay(Input.mousePosition).origin, playerCamera.ScreenPointToRay(Input.mousePosition).direction, Color.red);
             if (Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out hit))
             {
-                if (hit.transform.tag == "1")
+                if (hit.transform.tag == "1" && scriptedJourney.StatusTuto >= 10)
                 {
                     BureauBookPanel.SetActive(true);
                     BureauBookBackButton.SetActive(true);
@@ -211,7 +237,7 @@ public class CharacterControl : MonoBehaviour
                     Debug.Log(hit.transform.name);
                 }
 
-                if (hit.transform.tag == "2")
+                if (hit.transform.tag == "2" && scriptedJourney.StatusTuto >= 10)
                 {
                     BureauBookPanel.SetActive(true);
                     BureauBookBackButton.SetActive(true); 
@@ -220,14 +246,31 @@ public class CharacterControl : MonoBehaviour
                     Debug.Log(hit.transform.name);
                 }
 
-                if (hit.transform.tag == "3")
+                if (hit.transform.tag == "3" && scriptedJourney.StatusTuto >= 5)
+                {
+                    BureauBookPanel.SetActive(true);
+                    BureauBookBackButton.SetActive(true);
+                    BureauBookFinishButton.SetActive(true);
+                    TEST1.SetActive(false);
+                    TEST2.SetActive(false);
+                    TEST3.SetActive(true);
+                    Debug.Log(hit.transform.name);
+                }
+
+                if (hit.transform.tag == "4" && scriptedJourney.StatusTuto >= 4)
                 {
                     BureauBookPanel.SetActive(true);
                     BureauBookBackButton.SetActive(true);
                     TEST1.SetActive(false);
                     TEST2.SetActive(false);
-                    TEST3.SetActive(true);
+                    TEST3.SetActive(false);
+                    scriptedJourney.LetterUI.SetActive(true);
                     Debug.Log(hit.transform.name);
+                    
+                    if(scriptedJourney.StatusTuto == 4) 
+                    {
+                        scriptedJourney.StatusTuto = 5;
+                    }
                 }
             }
         }
@@ -235,7 +278,7 @@ public class CharacterControl : MonoBehaviour
 
     public void InteracteIn()
     {
-        Debug.Log("Je clique");
+        //Debug.Log("Je clique");
         if (Helper == 1)
         {
             canMove = false;
@@ -254,6 +297,12 @@ public class CharacterControl : MonoBehaviour
             playerCamera.transform.position = VueRuelle.transform.position;
             playerCamera.transform.rotation = VueRuelle.transform.rotation;
         }
+        if (Helper == 3)
+        {
+            //Debug.Log("letterBox Clicked");
+            scriptedJourney.StatusTuto = 1;
+            scriptedJourney.LetterUI.SetActive(true);
+        }
     }
 
     public void InteracteOut()
@@ -268,6 +317,37 @@ public class CharacterControl : MonoBehaviour
         RuelleMode.SetActive(false);
         playerCamera.transform.position = VueFPS.transform.position;
         playerCamera.transform.rotation = VueFPS.transform.rotation;
+
+        if (scriptedJourney.StatusTuto == 3)
+        {
+            scriptedJourney.StatusTuto = 4;
+        }
+    }
+
+    public void Finish()
+    {
+        BureauBookConfirmWindow.SetActive(true);
+    }
+
+    public void ConfirmFinish()
+    {
+        BureauBookPanel.SetActive(false);
+        BureauBookBackButton.SetActive(false);
+        TEST1.SetActive(false);
+        TEST2.SetActive(false);
+        TEST3.SetActive(false);
+        scriptedJourney.LetterUI.SetActive(false);
+        BureauBookConfirmWindow.SetActive(false);
+
+        if (scriptedJourney.StatusTuto == 5)
+        {
+            scriptedJourney.StatusTuto = 6;
+        }
+    }
+
+    public void ExitConfirm()
+    {
+        BureauBookConfirmWindow.SetActive(false);
     }
 
     public void BookInteracteOut()
@@ -277,6 +357,8 @@ public class CharacterControl : MonoBehaviour
         TEST1.SetActive(false);
         TEST2.SetActive(false);
         TEST3.SetActive(false);
+        scriptedJourney.LetterUI.SetActive(false);
+
     }
 
     public void Pause()
