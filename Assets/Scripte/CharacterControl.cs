@@ -67,7 +67,19 @@ public class CharacterControl : MonoBehaviour
     private GameObject BureauBookFinishButton;
     private GameObject BureauBookConfirmWindow;
 
-    
+    [Header("------Audio------")]
+    [SerializeField]
+    private AudioSource Radio;
+    bool RadioTable = false;
+    [SerializeField]
+    private AudioSource paper1;
+    [SerializeField]
+    private AudioSource paper2;
+    [SerializeField]
+    private AudioSource switch1;
+    [SerializeField]
+    private AudioSource switch2;
+
     private GameObject PauseModeBackButton;
 
 
@@ -86,6 +98,7 @@ public class CharacterControl : MonoBehaviour
 
     void Start()
     {
+        gameObject.transform.position = new Vector3(-1, 1, 1);
         characterController = GetComponent<CharacterController>();
         range = 10;
 
@@ -194,6 +207,11 @@ public class CharacterControl : MonoBehaviour
 
                     if (hit.transform.tag == "Table" && scriptedJourney.StatusTuto >= 4)
                     {
+                        if(RadioTable == false)
+                        {
+                            RadioTable = true;
+                            Radio.Play();
+                        }
                         dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
                         InteractionButton.SetActive(true);
                         InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
@@ -252,6 +270,7 @@ public class CharacterControl : MonoBehaviour
 
         if (ViewIsChanged)
         {
+            
             Debug.DrawRay(playerCamera.ScreenPointToRay(Input.mousePosition).origin, playerCamera.ScreenPointToRay(Input.mousePosition).direction, Color.red);
             if (Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out hit))
             {
@@ -304,6 +323,8 @@ public class CharacterControl : MonoBehaviour
 
     public void InteracteIn()
     {
+        switch1.Play();
+
         //Debug.Log("Je clique");
         if (Helper == 1)
         {
@@ -338,6 +359,8 @@ public class CharacterControl : MonoBehaviour
 
     public void InteracteOut()
     {
+        switch2.Play();
+
         canMove = true;
         playerCamera.fieldOfView = 70;
         ViewIsChanged = false;
@@ -357,11 +380,13 @@ public class CharacterControl : MonoBehaviour
 
     public void Finish()
     {
+        paper1.Play();
         BureauBookConfirmWindow.SetActive(true);
     }
 
     public void ConfirmFinish()
     {
+        paper1.Play();
         BureauBookPanel.SetActive(false);
         BureauBookBackButton.SetActive(false);
         TEST1.SetActive(false);
@@ -393,11 +418,13 @@ public class CharacterControl : MonoBehaviour
 
     public void ExitConfirm()
     {
+        paper2.Play();
         BureauBookConfirmWindow.SetActive(false);
     }
 
     public void BookInteracteOut()
     {
+        paper2.Play();
         BureauBookPanel.SetActive(false);
         BureauBookBackButton.SetActive(false);
         TEST1.SetActive(false);
@@ -410,21 +437,25 @@ public class CharacterControl : MonoBehaviour
 
     public void Pause()
     {
+        switch1.Play();
         PauseMode.SetActive(true);
     }
     
     public void QuitPause()
     {
+        switch2.Play();
         PauseMode.SetActive(false);
     }
     
     public void BackToMenu()
     {
         SceneManager.LoadScene(sceneName: "Menu");
+        SceneManager.UnloadScene(sceneName: "Main");
     }
     
     public void Option()
     {
+        switch1.Play();
         Debug.Log("OptionButton");
     }
 }

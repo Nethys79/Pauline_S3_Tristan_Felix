@@ -28,7 +28,7 @@ public class ScriptedJourney : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("/-----Player-----");
-        Player.transform.position = new Vector3(-1, 1, 1);
+        //Player.transform.position = new Vector3(-1, 1, 1);
 
         LetterBox = GameObject.Find("/-----Scripted journey-----/LetterBox");
         LetterBox.SetActive(false);
