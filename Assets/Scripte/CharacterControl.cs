@@ -202,6 +202,10 @@ public class CharacterControl : MonoBehaviour
                         {
                             scriptedJourney.StatusTuto = 3;
                         }
+                        if (scriptedJourney.StatusTuto == 7)
+                        {
+                            scriptedJourney.StatusTuto = 8;
+                        }
                     }
 
                     if (hit.transform.tag == "LetterBox")
@@ -212,6 +216,15 @@ public class CharacterControl : MonoBehaviour
 
                         Debug.Log("active LetterBox");
                         Helper = 3;
+                    }
+
+                    if (hit.transform.tag == "End")
+                    {
+                        dotImage.color = new Color(dotImage.color.r, dotImage.color.g, dotImage.color.b, 1);
+                        InteractionButton.SetActive(true);
+                        InteractionButtonImage.color = new Color(InteractionButtonImage.color.r, InteractionButtonImage.color.g, InteractionButtonImage.color.b, 1);
+
+                        Helper = 4;
                     }
                 }
                 else
@@ -303,6 +316,11 @@ public class CharacterControl : MonoBehaviour
             scriptedJourney.StatusTuto = 1;
             scriptedJourney.LetterUI.SetActive(true);
         }
+        if (Helper == 4)
+        {
+            Debug.Log("End Clicked");
+            SceneManager.LoadScene(sceneName: "End");
+        }
     }
 
     public void InteracteOut()
@@ -342,6 +360,21 @@ public class CharacterControl : MonoBehaviour
         if (scriptedJourney.StatusTuto == 5)
         {
             scriptedJourney.StatusTuto = 6;
+        }
+
+        if (scriptedJourney.StatusTuto == 6)
+        {
+            scriptedJourney.StatusTuto = 7;
+        }
+
+        if (scriptedJourney.StatusTuto == 8)
+        {
+            scriptedJourney.StatusTuto = 9;
+        }
+
+        if (scriptedJourney.StatusTuto == 9)
+        {
+            scriptedJourney.StatusTuto = 10;
         }
     }
 

@@ -11,6 +11,7 @@ TagManager:
   - 3
   - LetterBox
   - 4
+  - End
   layers:
   - Default
   - TransparentFX

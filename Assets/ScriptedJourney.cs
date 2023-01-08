@@ -17,6 +17,9 @@ public class ScriptedJourney : MonoBehaviour
     private BoxCollider dialogueBoxCollider1;
 
     [SerializeField]
+    private GameObject endBox;
+
+    [SerializeField]
     public int StatusTuto;
 
     // Start is called before the first frame update
@@ -30,7 +33,10 @@ public class ScriptedJourney : MonoBehaviour
         
         dialogueBox1 = GameObject.Find("/-----Scripted journey-----/DialogueBox1");
         dialogueBox1.SetActive(false);
-        
+
+        endBox = GameObject.Find("/-----Scripted journey-----/End");
+        endBox.SetActive(false);
+
         ClosedDoor = GameObject.Find("/-----ENVIRONNEMENT-----/PorteClosed");
         ClosedDoor.SetActive(true);
 
@@ -60,6 +66,11 @@ public class ScriptedJourney : MonoBehaviour
         if (StatusTuto == 2)
         {
             dialogueBox1.SetActive(false);
+        }
+
+        if (StatusTuto == 10)
+        {
+            endBox.SetActive(true);
         }
     }
 }
