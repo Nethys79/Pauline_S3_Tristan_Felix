@@ -49,6 +49,8 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField]
     private GameObject VueFPS;
+    [SerializeField]
+    private GameObject Letter;
 
     [SerializeField]
     private GameObject VueRuelle;
@@ -125,6 +127,8 @@ public class CharacterControl : MonoBehaviour
         PauseMode.SetActive(false);
 
         VueFPS = GameObject.Find("/-----Player-----/CamPos1");
+        Letter = GameObject.Find("/-----Player-----/Plane");
+        Letter.SetActive(false);
 
         VueRuelle = GameObject.Find("/-----ENVIRONNEMENT-----/RuelleBox/CamPos2");
 
@@ -139,6 +143,15 @@ public class CharacterControl : MonoBehaviour
 
     void Update()
     {
+        if (scriptedJourney.StatusTuto > 0 && scriptedJourney.StatusTuto < 5)
+        {
+            Letter.SetActive(true);
+        }
+        else 
+        {
+            Letter.SetActive(false);
+        }
+
         Debug.Log(scriptedJourney.StatusTuto);
 
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -391,6 +404,7 @@ public class CharacterControl : MonoBehaviour
         TEST2.SetActive(false);
         TEST3.SetActive(false);
         scriptedJourney.LetterUI.SetActive(false);
+        scriptedJourney.IntroUI.SetActive(false);
 
     }
 

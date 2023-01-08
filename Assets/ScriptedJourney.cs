@@ -13,6 +13,8 @@ public class ScriptedJourney : MonoBehaviour
     [SerializeField]
     public GameObject LetterUI;
     [SerializeField]
+    public GameObject IntroUI;
+    [SerializeField]
     private GameObject dialogueBox1;
     private BoxCollider dialogueBoxCollider1;
 
@@ -43,7 +45,10 @@ public class ScriptedJourney : MonoBehaviour
         LetterUI = GameObject.Find("/-----UI-----/Canvas/PanelLetter");
         LetterUI.SetActive(false);
 
-        
+        IntroUI = GameObject.Find("/-----UI-----/Canvas/Intro");
+        IntroUI.SetActive(true);
+
+
 
         StatusTuto = 0;
     }
