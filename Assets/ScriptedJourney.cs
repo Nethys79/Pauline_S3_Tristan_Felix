@@ -56,6 +56,7 @@ public class ScriptedJourney : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(StatusTuto);
         if (StatusTuto == 0)
         {
             LetterBox.SetActive(true);
