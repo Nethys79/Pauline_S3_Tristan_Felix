@@ -309,6 +309,7 @@ public class CharacterControl : MonoBehaviour
                         }
                         if (tuto.TutoInt == 4) { tuto.TutoInt = 5; }
                         if (tuto.TutoInt == 5) { tuto.TutoInt = 6; }
+                        if(tuto.TutoInt == 18) { tuto.TutoInt = 19; }
                 }
 
                 if (hit.transform.tag == "4" && scriptedJourney.StatusTuto >= 4)
@@ -362,7 +363,10 @@ public class CharacterControl : MonoBehaviour
         if (Helper == 4)
         {
             //Debug.Log("End Clicked");
-            SceneManager.LoadScene(sceneName: "End");
+            if (tuto.TutoInt == 21 && scriptedJourney.StatusTuto == 11)
+            {
+                SceneManager.LoadScene(sceneName: "End");
+            }
         }
     }
 
@@ -432,6 +436,20 @@ public class CharacterControl : MonoBehaviour
         if (scriptedJourney.StatusTuto == 9)
         {
             scriptedJourney.StatusTuto = 10;
+        }
+
+        if (scriptedJourney.StatusTuto == 11 && tuto.TutoInt == 20)
+        {
+            scriptedJourney.StatusTuto = 12;
+            tuto.TutoInt = 21;
+            paper1.Play();
+            BureauBookPanel.SetActive(false);
+            BureauBookBackButton.SetActive(false);
+            ////TEST1.SetActive(false);
+            ////TEST2.SetActive(false);
+            TEST3.SetActive(false);
+            scriptedJourney.LetterUI.SetActive(false);
+            BureauBookConfirmWindow.SetActive(false);
         }
     }
 

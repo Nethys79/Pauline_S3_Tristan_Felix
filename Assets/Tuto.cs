@@ -386,7 +386,7 @@ public class Tuto : MonoBehaviour
             skip.SetActive(true);
             HenrichText.SetText("I see. Thank you for letting me know. We’ll probably see each other again in the near future, so stay alert of your surroundings and the people you talk to. Have a good day.");
         }
-        if(TutoInt == 18)
+        if(TutoInt == 18 && scriptedJourney.StatusTuto < 10)
         {
             Henrich.SetActive(false);
             Pauline.SetActive(false);
@@ -394,7 +394,48 @@ public class Tuto : MonoBehaviour
             PaulineRep2.SetActive(false);
             PaulineRep3.SetActive(false);
             skip.SetActive(false);
+            scriptedJourney.StatusTuto = 10;
         }
+        if (TutoInt == 19)
+        {
+            SideBar.SetActive(true);
+            SideBarPicture.SetActive(false);
+            SideBarPrenom1.SetActive(false);
+            SideBarDate.SetActive(false);
+            SideBarChildren.SetActive(false);
+            Doc11.SetActive(false);
+            Doc12.SetActive(false);
+            Doc21.SetActive(false);
+            Doc22.SetActive(false);
+            Doc31.SetActive(true);
+            Doc32.SetActive(false);
+            Doc41.SetActive(false);
+            Doc42.SetActive(false);
+        }
+
+        if (TutoInt == 20)
+        {
+            SideBar.SetActive(true);
+            SideBarPicture.SetActive(false);
+            SideBarPrenom1.SetActive(false);
+            SideBarDate.SetActive(true);
+            SideBarChildren.SetActive(false);
+            Doc11.SetActive(false);
+            Doc12.SetActive(false);
+            Doc21.SetActive(false);
+            Doc22.SetActive(false);
+            Doc31.SetActive(true);
+            Doc32.SetActive(false);
+            Doc41.SetActive(false);
+            Doc42.SetActive(false);
+        }
+        if (TutoInt == 20 && day == 14 && month == 8 && year == 1943)
+        {
+            TutoInt = 21;
+            scriptedJourney.StatusTuto = 11;
+        }
+
+
 
 
         //le check point 10 de journey status tuto ce fait ici
